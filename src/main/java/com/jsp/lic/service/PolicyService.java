@@ -41,6 +41,7 @@ public class PolicyService {
 	public ResponseEntity<ResponceStructure<Policy>> fetchPolicyById(int policy_Number) {
 		Policy dbPolicy = policyDao.getPolicyById(policy_Number);
 		if (dbPolicy != null) {
+			dbPolicy.setSum_assured(dbPolicy.getPremium() * dbPolicy.getTerm());
 			ResponceStructure<Policy> responceStructure = new ResponceStructure<>();
 			responceStructure.setMassege("Policy Founded Successfully");
 			responceStructure.setStatus(HttpStatus.FOUND.value());
@@ -56,7 +57,9 @@ public class PolicyService {
 		List<Policy> policies = policyDao.getAllPolices();
 		List<Policy> list = new ArrayList<>();
 		for (Policy policy : policies) {
+			
 			if (policy != null) {
+				policy.setSum_assured(policy.getPremium()*policy.getTerm());
 				list.add(policy);
 			}
 		}

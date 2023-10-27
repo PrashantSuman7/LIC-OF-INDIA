@@ -27,10 +27,9 @@ public class AgentDto {
 	private AddressDto addressDto;
 	
 	@ManyToOne
-	@JsonIgnore
 	private CompanyDto companyDto;
 	
-	@OneToMany(mappedBy = "agent")
+	@OneToMany
 	@JsonIgnore
 	private List<PolicyHolderDto> holderDtos;
 }

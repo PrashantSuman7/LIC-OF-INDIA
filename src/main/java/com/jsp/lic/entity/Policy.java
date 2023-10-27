@@ -22,7 +22,7 @@ public class Policy {
 	private int term;
 	private double sum_assured=1;
 	@ManyToOne
-	@JoinColumn(name = "holderid")
-	private PolicyHolder policyHolder;
+	@JoinColumn
+	private PolicyHolder policyHolder ;
 
 }

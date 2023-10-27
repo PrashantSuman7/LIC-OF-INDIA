@@ -55,10 +55,10 @@ public class PolicyHolderController {
 	}
 	
 	@GetMapping("/getAllPolicy")
-	public List<Policy> getAllPolicyHolderById
+	public List<Policy> getAllPolicyById
 	(@RequestParam int policyId)
 	{
-		return service.getAllPolicy(policyId);
+		return service.getAllPolicyById(policyId);
 	}
 	
 	@GetMapping("/loginholder")

@@ -64,8 +64,10 @@ public class AgentService {
 			 */
 
 			if (dbCompany != null) {
-				if (dbAddress.getCompany() != null && dbAddress.getPolicyHolder() != null) {
+				if (dbAddress.getCompany() != null) {
 					throw new AddressAlreadyMappedtoOther("Sorry Address Id Already mapped to Another Entity");
+				}if(dbAddress.getPolicyHolder()!=null) {
+					throw new AddressIdNoFonundException("Sorry Address Id Already mapped to Another Entity");
 				}
 				dbAddress.setAgent(agent);
 				agent.setAddress(dbAddress);

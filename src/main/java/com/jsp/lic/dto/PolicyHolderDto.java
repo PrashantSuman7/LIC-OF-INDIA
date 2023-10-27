@@ -31,11 +31,9 @@ public class PolicyHolderDto {
 	private AddressDto addressDto;
 	
 	@ManyToOne
-	@JsonIgnore
 	private AgentDto agentdto;
 	
 	@OneToMany
-	@JsonIgnore
 	private List<Policy> policies;
 
 }

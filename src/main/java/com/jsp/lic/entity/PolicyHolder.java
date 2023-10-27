@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -32,12 +33,13 @@ public class PolicyHolder {
 	private LocalDate nextDeuDate=openingDate;
 	private double premium;
 	private double maturity=1.0;
-	@OneToOne 
+	@OneToOne(mappedBy = "policyHolder")
 	private Address address;
 	@ManyToOne
+	@JoinColumn
 	private Agent agent;
 	
-	@OneToMany
+	@OneToMany(mappedBy = "policyHolder")
 	private List<Policy> policies;
 	
 }

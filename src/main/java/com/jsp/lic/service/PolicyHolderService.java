@@ -80,24 +80,25 @@ public class PolicyHolderService {
 						break;
 
 					} else if (dbPolicy.getPolicy_type().equalsIgnoreCase(type2)) {
-						policyHolder.setNextDeuDate(policyHolder.getNextDeuDate().plusMonths(6));
-						break;
-
-					} else if (dbPolicy.getPolicy_type().equalsIgnoreCase(type3)) {
 						policyHolder.setNextDeuDate(policyHolder.getNextDeuDate().plusMonths(1));
 						break;
 
+					} else if (dbPolicy.getPolicy_type().equalsIgnoreCase(type3)) {
+						policyHolder.setNextDeuDate(policyHolder.getNextDeuDate().plusMonths(9));
+						break;
+
 					} else if (dbPolicy.getPolicy_type().equalsIgnoreCase(type4)) {
-						policyHolder.setNextDeuDate(policyHolder.getNextDeuDate().plusMonths(3));
+						policyHolder.setNextDeuDate(policyHolder.getNextDeuDate().plusMonths(6));
 						break;
 					}
 
 					policyHolder.setMaturity(policyHolder.getPremium() * dbPolicy.getTerm());
 					policies.add(dbPolicy);
-					// dbPolicy.setPolicyHolder(policyHolder);
+					dbPolicy.setPolicyHolder(policyHolder);
 				}
 
 				policyHolder.setPolicies(policies);
+				
 
 				PolicyHolder dbHolder = holderdao.savePolicyHolder(policyHolder);
 				PolicyHolderDto holderDto = this.mapper.map(dbHolder, PolicyHolderDto.class);
@@ -137,10 +138,11 @@ public class PolicyHolderService {
 	public ResponseEntity<ResponceStructure<PolicyHolderDto>> updatePolicyHolderById(int policyId,
 			PolicyHolder policyHolder) {
 		PolicyHolder dbPolicyHolder = holderdao.updatePolicyHolderById(policyId, policyHolder);
-		
+
 		if (dbPolicyHolder != null) {
-			PolicyHolderDto dbHolder=this.mapper.map(dbPolicyHolder, PolicyHolderDto.class);
-			//PolicyHolderDto holderDto = this.mapper.map(dbPolicyHolder, PolicyHolderDto.class);
+			PolicyHolderDto dbHolder = this.mapper.map(dbPolicyHolder, PolicyHolderDto.class);
+			// PolicyHolderDto holderDto = this.mapper.map(dbPolicyHolder,
+			// PolicyHolderDto.class);
 			ResponceStructure<PolicyHolderDto> structure = new ResponceStructure<>();
 			structure.setMassege("Policy Holder Updated successfully");
 			structure.setStatus(HttpStatus.OK.value());
@@ -167,19 +169,19 @@ public class PolicyHolderService {
 		}
 	}
 
-	public List<Policy> getAllPolicy(int policyId) {
+	public List<Policy> getAllPolicyById(int policyId) {
+		List<Policy> list = new ArrayList<>();
 		PolicyHolder dbHolder = holderdao.findPolicyHolderById(policyId);
 		if (dbHolder != null) {
 			List<Policy> policies = dbHolder.getPolicies();
-			List<Policy> dbPolicies = new ArrayList<>();
-			for (Policy policy : policies) {
-				dbPolicies.add(policy);
-			}
-			return dbPolicies;
 
+			for (Policy policy : policies) {
+				list.add(policy);
+			}
 		} else {
 			throw new PersonNotBuyAnyPolicyException("Sorry ! this Person Not Buy any Policy");
 		}
+		return list;
 	}
 
 	public ResponseEntity<ResponceStructure<PolicyHolderDto>> logInPolicyHolderByEmailById(String email,

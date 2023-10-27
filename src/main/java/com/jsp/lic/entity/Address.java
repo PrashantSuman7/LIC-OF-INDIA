@@ -25,12 +25,13 @@ public class Address {
 	private String country;
 	private int pin_code;
 	@OneToOne
-	@JoinColumn(name = "companyId")
+	@JoinColumn
 	private Company company;
 	@OneToOne
-	@JoinColumn(name = "Agent_ID")
+	@JoinColumn
 	private Agent agent;
 	
 	@OneToOne
+	@JoinColumn
 	private PolicyHolder policyHolder;
 }

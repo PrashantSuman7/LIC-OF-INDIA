@@ -32,6 +32,7 @@ public class Agent {
 	private Address address;
 
 	@ManyToOne
+	@JsonIgnore
 	private Company company;
 	
 	@OneToMany(mappedBy = "agent")
