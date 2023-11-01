@@ -61,44 +61,32 @@ public class PolicyHolderService {
 
 				List<Policy> policies = new ArrayList<>();
 				for (int policyNum : policy_Number) {
-
-					/*
-					 * Here we declared Two block level variable sumassured10 and sumassured20 and
-					 * checking the condition if policy term equals 10 years then multiply same as
-					 * 20years term also and updating the Database......
-					 */
-
 					Policy dbPolicy = policyDao.getPolicyById(policyNum);
+					if (dbPolicy != null) {
+						dbPolicy.setPolicyHolder(policyHolder);
+						String type1 = "Yearly", type2 = "monthly", type3 = "qurterly", type4 = "halfyearly";
+						if (dbPolicy.getPolicy_type().equalsIgnoreCase(type1)) {
+							policyHolder.setNextDeuDate(policyHolder.getOpeningDate().plusYears(1));
+							break;
 
-					/*
-					 * Here we are Updating Premium next due by using if else statement
-					 */
-					// nextDeuDate
-					String type1 = "Yearly", type2 = "monthly", type3 = "qurterly", type4 = "halfyearly";
-					if (dbPolicy.getPolicy_type().equalsIgnoreCase(type1)) {
-						policyHolder.setNextDeuDate(policyHolder.getOpeningDate().plusYears(1));
-						break;
+						} else if (dbPolicy.getPolicy_type().equalsIgnoreCase(type2)) {
+							policyHolder.setNextDeuDate(policyHolder.getNextDeuDate().plusMonths(1));
+							break;
 
-					} else if (dbPolicy.getPolicy_type().equalsIgnoreCase(type2)) {
-						policyHolder.setNextDeuDate(policyHolder.getNextDeuDate().plusMonths(1));
-						break;
+						} else if (dbPolicy.getPolicy_type().equalsIgnoreCase(type3)) {
+							policyHolder.setNextDeuDate(policyHolder.getNextDeuDate().plusMonths(9));
+							break;
 
-					} else if (dbPolicy.getPolicy_type().equalsIgnoreCase(type3)) {
-						policyHolder.setNextDeuDate(policyHolder.getNextDeuDate().plusMonths(9));
-						break;
+						} else if (dbPolicy.getPolicy_type().equalsIgnoreCase(type4)) {
+							policyHolder.setNextDeuDate(policyHolder.getNextDeuDate().plusMonths(6));
+							break;
+						}
 
-					} else if (dbPolicy.getPolicy_type().equalsIgnoreCase(type4)) {
-						policyHolder.setNextDeuDate(policyHolder.getNextDeuDate().plusMonths(6));
-						break;
+						policyHolder.setMaturity(policyHolder.getPremium() * dbPolicy.getTerm());
+						policies.add(dbPolicy);
 					}
-
-					policyHolder.setMaturity(policyHolder.getPremium() * dbPolicy.getTerm());
-					policies.add(dbPolicy);
-					dbPolicy.setPolicyHolder(policyHolder);
 				}
-
 				policyHolder.setPolicies(policies);
-				
 
 				PolicyHolder dbHolder = holderdao.savePolicyHolder(policyHolder);
 				PolicyHolderDto holderDto = this.mapper.map(dbHolder, PolicyHolderDto.class);
@@ -111,6 +99,7 @@ public class PolicyHolderService {
 				return new ResponseEntity<ResponceStructure<PolicyHolderDto>>(structure, HttpStatus.CREATED);
 
 			} else {
+
 				throw new AgentIdNotFountException("Agent Id Not Present in Database");
 			}
 
